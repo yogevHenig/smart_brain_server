@@ -32,7 +32,7 @@ app.use(express.json());
 // define app to use cors
 app.use(cors());
 
-app.get('/', (req, res)=> { res.json(dataBase.users) } );
+app.get('/', (req, res)=> { res.json('it is working') } );
 
 app.post('/signin', signin.handleSignIn(db, bcrypt));
 
