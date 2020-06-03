@@ -2,7 +2,6 @@ const handleProfileGet = (req, res, db) => {
 	const { id } = req.params;
 	db.select('*').from('users').where({ id })
 	.then(user => {
-		console.log(user)
 		if (user.length){
 			res.json(user[0])	
 		} else {
@@ -13,12 +12,12 @@ const handleProfileGet = (req, res, db) => {
 }
 
 const handleProfileUpdate = (req, res, db) => {
+	console.log('handles profile updates')
 	const { id } = req.params;
-	//console.log('\n req.body..', req.body, '\n');
 	const { name, age, pet } = req.body.formInput;
 	db('users')
 		.where({ id })
-		.update({ name })
+		.update({ name, age, pet})
 		.then(resp => {
 			if (resp) {
 				res.json("success")

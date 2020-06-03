@@ -25,8 +25,14 @@ const handleSignIn = (db, bcrypt, req, res) => {
 		.catch(err => Promise.reject('worng credentials'));
 }
 
-const getAuthTockenId = () => {
-	console.log('auth ok');
+const getAuthTokenId = (req, res) => {
+	const { authorization } = req.headers;
+	redisClient.get(authorization, (err, reply) => {
+		if (err || !reply) {
+			return res.status(400).json('Unauthorized');
+		}
+		return res.json( {id: reply} )
+	})
 }
 
 const signToken = (email) => {
@@ -49,8 +55,7 @@ const createSessions = (user) => {
 
 const signinAuthentication = (db, bcrypt) => (req, res) => {
 	const { authorization } = req.headers; // check if the fronend sent authorization already
-	return authorization ? 
-	getAuthTockenId() :
+	return authorization ? getAuthTokenId(req, res) :
 	handleSignIn(db, bcrypt, req, res)
 	.then(data => { // data is user
 		return data.id && data.email ? createSessions(data) : Promise.reject(data)
@@ -63,5 +68,6 @@ const signinAuthentication = (db, bcrypt) => (req, res) => {
 
 
 module.exports = {
-	signinAuthentication: signinAuthentication
+	signinAuthentication: signinAuthentication,
+	redisClient: redisClient
 }
