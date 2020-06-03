@@ -1,0 +1,34 @@
+version: '3.8'
+
+services: 
+
+  # Backend API
+  smart-brain-api:
+    container_name: backend
+    build: ./ # using the docker file
+    command: npm start
+    working_dir: /usr/src/smart-brain-api
+    environment:
+      POSTGRES_URI: postgres://sally:secret@postgres:5432/smart-brain-docker
+      REDIS_URI: redis://redis:6379
+    ports: 
+      - "3000:3000"
+    volumes: 
+      - ./:/usr/src/smart-brain-api # maps the working directory in our machine to the path in the  docker container
+
+  # Postgres
+  postgres:
+    environment:
+      POSTGRES_USER: sally
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: smart-brain-docker
+      POSTGRES_HOST: postgres
+    build: ./postgres
+    ports: 
+      - "5432:5432"
+
+  # Redis
+  redis:
+    image: redis # instead of docker file, using image from dockerhub
+    ports: 
+      - "6379:6379"
