@@ -9,11 +9,11 @@ const signToken = (email) => {
 
 const setToken= (key, value) => {
 	console.log("\n\n setting the token...\n\n")
-	redisClient.set(key, value);
+	//redisClient.set(key, value);
 	console.log("\n\n redis set key\n\n")
-	let p = Promise.resolve(redisClient.set(key, value))
-	console.log('\n\n\n Promise \n\n\n', p )
-	return p;
+	return Promise.resolve(redisClient.set(key, value))
+	// console.log('\n\n\n Promise \n\n\n', p )
+	//return p;
 }
 
 const createSessions = (user) => {

@@ -4,7 +4,7 @@ services:
 
   # Backend API
   smart-brain-api:
-    container_name: backend
+    container_name: smart-brain-backend
     build: ./ # using the docker file
     command: npm start
     working_dir: /usr/src/smart-brain-api

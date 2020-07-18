@@ -1,9 +1,9 @@
-const jwt = require('jsonwebtoken');
 const session = require('./session');
 const redisClient = require('../redis/redis').redisClient;
 
 
 const handleSignIn = (db, bcrypt, req, res) => {
+	console.log('first time here')
 	const { email , password } = req.body;
 	if(!email || !password){
 		return Promise.reject('incorrect form subbmition');
@@ -25,6 +25,7 @@ const handleSignIn = (db, bcrypt, req, res) => {
 }
 
 const getAuthTokenId = (req, res) => {
+	console.log('second time here..')
 	const { authorization } = req.headers;
 	redisClient.get(authorization, (err, reply) => {
 		if (err || !reply) {
